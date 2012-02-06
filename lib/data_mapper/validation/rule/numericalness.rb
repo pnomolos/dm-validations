@@ -68,7 +68,7 @@ module DataMapper
         def value_as_string(value)
           case value
           # Avoid Scientific Notation in Float to_s
-          when Float      then value.to_d.to_s('F')
+          when Float      then value.to_d(options.fetch(:precision, nil)).to_s('F')
           when BigDecimal then value.to_s('F')
           else value.to_s
           end

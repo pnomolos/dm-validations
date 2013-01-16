@@ -27,7 +27,7 @@ module DataMapper
 
       def valid?(target)
         value = target.validation_property_value(field_name)
-        return true if optional?(value)
+        return true if optional?(value) && DataMapper::Ext.blank?(value)
 
         opts = {
           :fields    => target.model.key(target.repository.name),

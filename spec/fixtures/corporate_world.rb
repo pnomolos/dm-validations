@@ -34,6 +34,20 @@ module DataMapper
         validates_uniqueness_of :user_name, :when => :signing_up_for_department_account,   :scope => [:department]
         validates_uniqueness_of :user_name, :when => :signing_up_for_organization_account, :scope => [:organisation]
       end
+
+      class Manager
+        include DataMapper::Resource
+
+        property :id, Serial
+        property :name, String
+        property :title, String
+
+        validates_uniqueness_of :title, :if => :has_title?
+
+        def has_title?
+          !title.nil? && title != ''
+        end
+      end
     end
   end
 end

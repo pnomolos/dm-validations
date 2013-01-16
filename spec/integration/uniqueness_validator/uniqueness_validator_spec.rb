@@ -113,4 +113,35 @@ describe 'uniqueness_validator/uniqueness_validator_spec' do
     end
   end
 
+  describe 'DataMapper::Validations::Fixtures::Manager' do
+    before :all do
+      DataMapper::Validations::Fixtures::Manager.destroy!
+
+      DataMapper::Validations::Fixtures::Manager.create(:name => "John", :title => 'CEO').should be_saved
+    end
+
+    describe "with unique title" do
+      before do
+        @model = DataMapper::Validations::Fixtures::Manager.new(:name => 'Bob', :title => 'COO')
+      end
+
+      it_should_behave_like "valid model"
+    end
+
+    describe "with a duplicate title" do
+      before do
+        @model = DataMapper::Validations::Fixtures::Manager.new(:name => 'Bob', :title => 'CEO')
+      end
+
+      it_should_behave_like "invalid model"
+    end
+
+    describe "with no title" do
+      before do
+        @model = DataMapper::Validations::Fixtures::Manager.new(:name => 'Bob')
+      end
+
+      it_should_behave_like "valid model"
+    end
+  end
 end
